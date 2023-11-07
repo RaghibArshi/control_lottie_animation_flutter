@@ -1,0 +1,82 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+
+  late final AnimationController controller;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller = AnimationController(
+        duration: const Duration(seconds: 2),
+        vsync: this
+    );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    controller.dispose();
+  }
+
+  bool boxOpen = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFEB6440),
+        title: const Text('Lottie Animation'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Lottie.asset(
+                  'assets/box.json',
+                  // height: 500, width: 500,
+                  controller: controller
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.grey.shade400, // Set the background color
+                onPrimary: Colors.grey.shade800, // Set the text (label) color
+              ),
+              onPressed: () {
+                if(boxOpen == false){
+                  boxOpen = true;
+                  controller.forward();
+                } else{
+                  boxOpen = false;
+                  controller.reverse();
+                }
+                setState(() {});
+              },
+                child: Text(
+                  boxOpen == false
+                      ? 'Open Box'
+                      : 'Close Box', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
